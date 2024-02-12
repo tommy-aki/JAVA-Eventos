@@ -4,6 +4,7 @@
  */
 package progra2_eventos;
 
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 
 /**
@@ -178,17 +179,36 @@ public class Principal_FORM extends javax.swing.JFrame {
     private void eliminar_BUTTONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminar_BUTTONActionPerformed
         // TODO add your handling code here:
         String codigo = JOptionPane.showInputDialog(this, "Insertar codigo de evento");
+        if(user.srcCode(codigo)!=null){
+            if(user.srcCode(codigo).getHost().equals(user.getUser()) && !user.srcCode(codigo).isCancelado()){
+                Calendar fecha = user.srcCode(codigo).getFecha();
+                fecha.add(Calendar.DAY_OF_YEAR, -1);
+                String txt = Calendar.getInstance().after(fecha) 
+                        ? "Seguro que desea cancelar? Se cobrará 50% del monto"
+                        : "Seguro que desea cancelar?";
+                int confirm = JOptionPane.showConfirmDialog(null, txt);
+                //0 si, 1 no, 2 cancel
+                switch (confirm){
+                    case 0 -> {
+                        user.srcCode(codigo).cancelar(Calendar.getInstance().after(fecha));
+                    }
+                    case 1 -> {
+                       JOptionPane.showMessageDialog(null, "Accion cancelada");
+                    }
+                }
+            }
+        }
     }//GEN-LAST:event_eliminar_BUTTONActionPerformed
 
     private void editar_BUTTONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editar_BUTTONActionPerformed
         // TODO add your handling code here:
         String codigo = JOptionPane.showInputDialog(this, "Insertat codigo de evento");
         if(user.srcCode(codigo)!=null){
-            if(user.srcCode(codigo).getHost().equals(user.getUser())){
+            if(user.srcCode(codigo).getHost().equals(user.getUser()) && !user.srcCode(codigo).isCancelado()){
                 new EditarEvento_FORM(user, user.srcCode(codigo)).setVisible(true);
                 this.dispose();
             } else {
-                JOptionPane.showMessageDialog(null, "ERROR! Evento no pertenece al usuario");
+                JOptionPane.showMessageDialog(null, "ERROR! Evento no encontrado en tu lista.");
             }
         } else {
             JOptionPane.showMessageDialog(null, "ERROR! Codigo no encontrado");
@@ -198,6 +218,10 @@ public class Principal_FORM extends javax.swing.JFrame {
     private void ver_BUTTONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ver_BUTTONActionPerformed
         // TODO add your handling code here:
         String codigo = JOptionPane.showInputDialog(this, "Insertar codigo de evento");
+        if(user.srcCode(codigo)!=null){
+            this.dispose();
+            new View_FORM(user.srcCode(codigo)).setVisible(true);
+        }
     }//GEN-LAST:event_ver_BUTTONActionPerformed
 
     /**

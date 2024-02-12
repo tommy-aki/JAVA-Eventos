@@ -324,7 +324,7 @@ public class Crear_FORM extends javax.swing.JFrame {
         String title = title_FIELD.getText();
         String desc = desc_FIELD.getText();
         String host = cuenta.getUser();
-        System.out.println(host);
+        //System.out.println(host);
         String montoStr = monto_FIELD.getText();
         double monto = Double.parseDouble(montoStr);
         int dia = this.dia.getSelectedIndex();
@@ -334,7 +334,11 @@ public class Crear_FORM extends javax.swing.JFrame {
         
         Calendar fecha = Calendar.getInstance();
         fecha.set(año, mes, dia);
-        if(fecha.after(Calendar.getInstance())){
+        if(
+                fecha.after(Calendar.getInstance()) &&
+                !title.isEmpty() &&
+                !desc.isEmpty() &&
+                !montoStr.isEmpty()){
             int tipo = Seleccion_TAB.getSelectedIndex();
             switch (tipo){
                 case 0 -> {

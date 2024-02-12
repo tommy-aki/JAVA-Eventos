@@ -18,18 +18,7 @@ public class EventosList implements Serializable {
     
     public EventosList(){
         lista = new ArrayList();
-        try {
-            File file = new File("eventos.ser");
-            if (file.exists()) {
-                FileInputStream fileIn = new FileInputStream(file);
-                ObjectInputStream in = new ObjectInputStream(fileIn);
-                lista = (ArrayList<Eventos>) in.readObject();
-                in.close();
-                fileIn.close();
-            }
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        loadSer();
         updateSer();
         debugPrint();
     }
@@ -47,7 +36,23 @@ public class EventosList implements Serializable {
         }
     }
     
+    public final void loadSer(){
+        try {
+            File file = new File("eventos.ser");
+            if (file.exists()) {
+                FileInputStream fileIn = new FileInputStream(file);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                lista = (ArrayList<Eventos>) in.readObject();
+                in.close();
+                fileIn.close();
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    
     public Eventos searchCode(String code){
+        loadSer();
         for(Eventos evento:lista)
             if (evento!=null && evento.getCodigo().equals(code))
                 return evento;

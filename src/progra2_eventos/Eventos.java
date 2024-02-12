@@ -22,6 +22,7 @@ public abstract class Eventos implements Serializable{
     protected int capacidad;
     protected String codigo;
     protected boolean cancelado;
+    protected double multa;
     
     public Eventos(String title, String desc, String realizado, Calendar fecha, double monto){
         titulo=title;
@@ -30,6 +31,7 @@ public abstract class Eventos implements Serializable{
         this.monto=monto;
         cancelado=false;
         host=realizado;
+        multa=0;
     }
     
     public String getTitle(){
@@ -50,6 +52,11 @@ public abstract class Eventos implements Serializable{
     public String getHost(){
         return host;
     }
+    
+    public abstract void editEvt(String title, String desc, String realizado, Calendar fecha, double monto, String equipo1, String equipo2);
+    /*{
+        
+    }*/
     public String generarCodigo(){
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder codigo = new StringBuilder();
@@ -63,8 +70,17 @@ public abstract class Eventos implements Serializable{
     public String getCodigo(){
         return codigo;
     }
-    public void cancelar(){
+    public double getMulta(){
+        return multa;
+    }
+    public void cancelar(boolean pagaMulta){
         cancelado=true;
+        if (pagaMulta){
+            multa=monto*0.50;
+        }
+    }
+    public boolean isCancelado(){
+        return cancelado;
     }
     public abstract double getSeguroCosts();
 }

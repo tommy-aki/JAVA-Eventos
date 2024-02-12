@@ -37,4 +37,14 @@ public class EventoMusical extends Eventos{
             return empleados.get(cero) + "\n" + empleadosToString(cero+1);
         return "";
     }
+    
+    @Override
+    public void editEvt(String title, String desc, String realizado, Calendar fecha, double monto, String equipo1, String equipo2){
+        titulo=title;
+        descripcion=desc;
+        fechaRealizacion=fecha;
+        this.monto=monto;
+        cancelado=false;
+        host=realizado;
+    }
 }

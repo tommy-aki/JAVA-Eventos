@@ -24,5 +24,15 @@ public class EventoReligioso extends Eventos{
         return COBRO_SEGURO;
     }
     
+    @Override
+    public void editEvt(String title, String desc, String realizado, Calendar fecha, double monto, String equipo1, String equipo2){
+        titulo=title;
+        descripcion=desc;
+        fechaRealizacion=fecha;
+        this.monto=monto;
+        cancelado=false;
+        host=realizado;
+    }
+    
     
 }

@@ -33,14 +33,18 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
             }
             case "progra2_eventos.EventoMusical" -> {
                 tipo_TAB.setSelectedIndex(1);
+                empleados_AREA.setText(((EventoMusical)evento).empleadosToString(0));
+                seguroM_LABEL.setText(String.format("%1.2f", evento.getSeguroCosts()));
             }
             case "progra2_eventos.EventoReligioso" -> {
                 tipo_TAB.setSelectedIndex(2);
+                seguroR_LABEL.setText(String.format("%1.2f", evento.getSeguroCosts()));
             }
         }
         title_FIELD.setText(evento.getTitle());
         desc_FIELD.setText(evento.getDesc());
         monto_FIELD.setText(Double.toString(evento.getMonto()));
+
     }
 
     /**
@@ -85,13 +89,15 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
         agregar2_BUTTON = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        seguroM_FIELD = new javax.swing.JTextField();
+        seguroM_LABEL = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         nombre_FIELD = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         empleados_AREA = new javax.swing.JTextArea();
         agregar_BUTTON = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
+        jLabel13 = new javax.swing.JLabel();
+        seguroR_LABEL = new javax.swing.JTextField();
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -244,7 +250,7 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
 
         jLabel11.setText("Seguro:");
 
-        seguroM_FIELD.setEditable(false);
+        seguroM_LABEL.setEditable(false);
 
         jLabel12.setText("Empleados: ");
 
@@ -253,6 +259,11 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
         jScrollPane3.setViewportView(empleados_AREA);
 
         agregar_BUTTON.setText("Agregar");
+        agregar_BUTTON.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregar_BUTTONActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -266,7 +277,7 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel11)
                         .addGap(18, 18, 18)
-                        .addComponent(seguroM_FIELD, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(seguroM_LABEL, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addGap(18, 18, 18)
@@ -289,21 +300,35 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(seguroM_FIELD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(seguroM_LABEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
         tipo_TAB.addTab("Musical", jPanel2);
 
+        jLabel13.setText("Seguro:");
+
+        seguroR_LABEL.setEditable(false);
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 388, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(199, Short.MAX_VALUE)
+                .addComponent(jLabel13)
+                .addGap(18, 18, 18)
+                .addComponent(seguroR_LABEL, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 301, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addContainerGap(264, Short.MAX_VALUE)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(seguroR_LABEL, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
         );
 
         tipo_TAB.addTab("Religioso", jPanel4);
@@ -389,11 +414,43 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
 
     private void monto_FIELDFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_monto_FIELDFocusLost
         // TODO add your handling code here:
+        double monto = Double.parseDouble(monto_FIELD.getText());
+        seguroM_LABEL.setText(String.format("%1.2f", monto*0.3));
+        seguroR_LABEL.setText("2000.00");
     }//GEN-LAST:event_monto_FIELDFocusLost
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-
-        
+        String title = title_FIELD.getText();
+        String desc = desc_FIELD.getText();
+        String host = cuenta.getUser();
+        //System.out.println(host);
+        String montoStr = monto_FIELD.getText();
+        double monto = Double.parseDouble(montoStr);
+        int dia = this.dia.getSelectedIndex();
+        int mes = this.mes.getSelectedIndex();
+        String añoStr = (String) this.año.getSelectedItem();
+        int año = Integer.parseInt(añoStr);
+        Calendar fecha = Calendar.getInstance();
+        fecha.set(año, mes, dia);
+        if(
+                fecha.after(Calendar.getInstance()) &&
+                !title.isEmpty() &&
+                !desc.isEmpty() &&
+                !montoStr.isEmpty()){
+            switch(tipo_TAB.getSelectedIndex()){
+                case 0 -> {
+                    evento.editEvt(title, desc, host, fecha, monto, equipo1_FIELD.getText(), equipo2_FIELD.getText());
+                }
+                case 1 -> {
+                    evento.editEvt(title, desc, host, fecha, monto, null, null);
+                }
+                case 2 -> {
+                    evento.editEvt(title, desc, host, fecha, monto, null, null);
+                }
+            }
+        }
+        this.dispose();
+        new Principal_FORM(cuenta).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
@@ -403,9 +460,9 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void agregar1_BUTTONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregar1_BUTTONActionPerformed
-        // TODO add your handling code here:
-        String jugador = jugador1_FIELD.getText().isEmpty() ? jugador1_FIELD.getText() : null;
-        if(!jugador.isBlank()){
+
+        String jugador = !jugador1_FIELD.getText().isEmpty() ? jugador1_FIELD.getText() : "";
+        if(!jugador.isEmpty()){
             ((EventoDeportivo)evento).addIntegrante1(jugador);
             jugadores1_LIST.setText(((EventoDeportivo)evento).equipo1ToString(0));
         }
@@ -413,14 +470,24 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
     }//GEN-LAST:event_agregar1_BUTTONActionPerformed
 
     private void agregar2_BUTTONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregar2_BUTTONActionPerformed
-        // TODO add your handling code here:
-        String jugador = jugador2_FIELD.getText().isEmpty() ? jugador2_FIELD.getText() : null;
-        if(!jugador.isBlank()){
-            ((EventoDeportivo)evento).addIntegrante1(jugador);
-            jugadores2_LIST.setText(((EventoDeportivo)evento).equipo1ToString(0));
+
+        String jugador = !jugador2_FIELD.getText().isEmpty() ? jugador2_FIELD.getText() : "";
+        if(!jugador.isEmpty()){
+            ((EventoDeportivo)evento).addIntegrante2(jugador);
+            jugadores2_LIST.setText(((EventoDeportivo)evento).equipo2ToString(0));
         }
         jugador2_FIELD.setText("");
     }//GEN-LAST:event_agregar2_BUTTONActionPerformed
+
+    private void agregar_BUTTONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregar_BUTTONActionPerformed
+        // TODO add your handling code here:
+        String empleado = !nombre_FIELD.getText().isEmpty() ? nombre_FIELD.getText() : "";
+       if(!empleado.isEmpty()){
+           ((EventoMusical)evento).addEmpleado(empleado);
+           empleados_AREA.setText(((EventoMusical)evento).empleadosToString(0));
+       }
+       nombre_FIELD.setText("");
+    }//GEN-LAST:event_agregar_BUTTONActionPerformed
 
     /**
      * @param args the command line arguments
@@ -475,6 +542,7 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -498,7 +566,8 @@ public class EditarEvento_FORM extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> mes;
     private javax.swing.JTextField monto_FIELD;
     private javax.swing.JTextField nombre_FIELD;
-    private javax.swing.JTextField seguroM_FIELD;
+    private javax.swing.JTextField seguroM_LABEL;
+    private javax.swing.JTextField seguroR_LABEL;
     private javax.swing.JTabbedPane tipo_TAB;
     private javax.swing.JTextField title_FIELD;
     // End of variables declaration//GEN-END:variables
